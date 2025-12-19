@@ -92,28 +92,6 @@ def main():
          mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
      )
 
-def get_conecta_sql_server(df: pd.DataFrame):
-    # Inicialización del motor una sola vez 
-    engine = create_sqlalchemy_engine() 
-    if engine is None:
-        # Mensaje de error ajustado
-        st.warning("Verifica que los drivers de ODBC estén instalados y las credenciales sean correctas")
-        return 
-    
-    try:        
-        columnas_clave = [col.strip() for col in KEY_COLUMN.split(',')] # 1. Separar la cadena KEY_COLUMN en una lista de nombres de columnas     
-        columnas_faltantes = [col for col in columnas_clave if col not in df.columns] # 2. Verificar que TODAS las columnas clave existan en el DataFrame
-        if columnas_faltantes: # Reportar solo las columnas que faltan
-            st.error(
-                f"Error de archivo: La columna(s) de ID '{', '.join(columnas_faltantes)}' "
-                f"definida(s) en 'config.py' no se encontró(eron) en el DataFrame."
-            )
-            return         
-        run_upsert_process(df, engine)              
-    except Exception as e:
-        # Captura errores inesperados al procesar.
-        st.error(f"Error inesperado al procesar el archivo o la lógica: {e}")
-
 def get_fecha_hora(hora):
     hora_web = datetime.strptime(hora[0:5],'%H:%M').time()
     hora_actual = datetime.now().time()
