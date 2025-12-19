@@ -55,6 +55,12 @@ def run_upsert_process(df_temporal: pd.DataFrame, engine):
     # Limpiar posibles errores de conversión (filas con fechas nulas)
     df_temporal = df_temporal.dropna(subset=['fecha', 'actualizacion']) 
 
+    # NUEVO: PASO DE DEDUPLICACIÓN Convertimos el string de KEY_COLUMN ("fecha, hora, ...") en una lista
+    list_keys = [k.strip() for k in KEY_COLUMN.split(',')]  
+    # Ordenamos por actualización (descendente) para que el primer registro sea el más nuevo
+    df_temporal = df_temporal.sort_values(by='actualizacion', ascending=False)
+    # Eliminamos duplicados basados en las llaves del MERGE
+    df_temporal = df_temporal.drop_duplicates(subset=list_keys, keep='first')
     staging_table_name = "stg_ocurrencias" 
     try:
         with engine.begin() as connection:
@@ -74,6 +80,6 @@ def run_upsert_process(df_temporal: pd.DataFrame, engine):
             # 3. Limpiar
             connection.execute(text(f"DROP TABLE origen.{staging_table_name}"))
             
-            return True, "Datos sincronizados exitosamente con SQL Server."
+            return True, "Datos sincronizados exitosamente en base de datos."
     except Exception as e:
         return False, f"Error durante el proceso: {e}"

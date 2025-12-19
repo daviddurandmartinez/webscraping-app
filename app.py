@@ -109,7 +109,7 @@ def get_gestion_content(url):
     else:
         return None
     
-@st.cache_data(ttl=600) # Caché por 10 min para no saturar las webs
+@st.cache_data(ttl=600, show_spinner=False) # Caché por 10 min para no saturar las webs
 def get_gestion_data():
     LISTA_GESTION_CLIMA = []
 
@@ -131,8 +131,8 @@ def get_gestion_data():
                          'fecha': fecha_noticia,
                          'hora': hora_noticia,
                          'noticia': titulo,
-                         'temperatura': None,
-                         'distrito': None,
+                         'temperatura': "S/E",
+                         'distrito': "S/E",
                          'tipo':categoria,
                          'fuente':'rpp',
                          'actualizacion': FECHA_HORA
@@ -158,8 +158,8 @@ def get_gestion_data():
                             'fecha': fecha_noticia,
                             'hora': hora_noticia,
                             'noticia': titulo,
-                            'temperatura': None,
-                            'distrito': None,
+                            'temperatura': "S/E",
+                            'distrito': "S/E",
                             'tipo': categoria,
                             'fuente':'gestion',
                             'actualizacion': FECHA_HORA
