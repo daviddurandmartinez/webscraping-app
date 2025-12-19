@@ -1,0 +1,10 @@
+beautifulsoup4
+pyodbc
+sqlalchemy
+pandas
+requests
+python-dotenv
+python-decouple
+streamlit
+Pillow
+xlsxwriter
