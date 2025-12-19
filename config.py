@@ -20,7 +20,6 @@ def get_sql_server_config():
 SQL_SERVER_CONFIG = get_sql_server_config()
 
 # OBTENER FECHA Y HORA ACTUAL
-# FECHA_HORA = time.strftime('%Y-%m-%d %H:%M:%S')
 FECHA_HORA = datetime.now()
 FECHA_ACTUAL = datetime.now().date()
 FECHA_ANTERIOR = datetime.now().date() - timedelta(days=1)
@@ -55,8 +54,7 @@ URL_CLIMA = {
 # DECLARAMOS LISTA CON PALABRAS CLAVES DE FILTRADO
 PALABRAS_CLAVE = ['huelga', 'paro','AFP','sueldo','feriado','sueldo','delincuencia','robo','temblor','lima','apuestas','aumento','Clima','robo','casino','guerra','legales']
 
-# Definir constantes de la aplicación (usadas por app.py y database_connector.py)
-# Si SQL_SERVER_CONFIG falla o está incompleto, asignamos valores de error.
+# Definir constantes de la aplicación (usadas por app.py y database_connector.py) - Si SQL_SERVER_CONFIG falla o está incompleto, asignamos valores de error.
 if SQL_SERVER_CONFIG and all(SQL_SERVER_CONFIG.values()):
     # Valores específicos proporcionados por el usuario
     TARGET_TABLE = "origen.ocurrencias" # Nombre de la tabla de destino en SQL Server

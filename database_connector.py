@@ -23,6 +23,7 @@ def create_sqlalchemy_engine():
         return None
 
 def generate_merge_query(df: pd.DataFrame, table_name: str, staging_table: str, key_columns_str: str) -> str:
+
     keys = [k.strip() for k in key_columns_str.split(',')]
     on_clause = " AND ".join([f"TARGET.[{k}] = SOURCE.[{k}]" for k in keys])
     
@@ -49,8 +50,8 @@ def run_upsert_process(df_temporal: pd.DataFrame, engine):
         return False, "El DataFrame está vacío."
         
     # NUEVO: Forzar conversión a Datetime Esto soluciona el error 22007 al enviar objetos fecha nativos
-    df_temporal['fecha'] = pd.to_datetime(df_temporal['fecha'], errors='coerce').dt.date
-    df_temporal['actualizacion'] = pd.to_datetime(df_temporal['actualizacion'], errors='coerce')
+    df_temporal['fecha'] = pd.to_datetime(df_temporal['fecha'], errors='coerce').dt.date 
+    df_temporal['actualizacion'] = pd.to_datetime(df_temporal['actualizacion'], errors='coerce') 
     # Limpiar posibles errores de conversión (filas con fechas nulas)
     df_temporal = df_temporal.dropna(subset=['fecha', 'actualizacion']) 
 
